@@ -22,6 +22,7 @@ API keys are kept secure via `config.py` (local) or environment variables (deplo
 ## 🏗️ Architecture
 
 
+<img width="1313" height="484" alt="Screenshot 2025-09-10 230214" src="https://github.com/user-attachments/assets/07265e4e-ec16-4bf1-8cf3-a740e62cfede" />
 
 
 
