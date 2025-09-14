@@ -17,7 +17,7 @@ import config
 
 # def query_vector(vector, top_k=5):
 #     return index.query(vector=vector, top_k=top_k, include_metadata=True)
-# --------------------------------------------------------------------------------------------------
+
 
 
 # Initialize Pinecone client
@@ -28,17 +28,18 @@ print(pc.list_indexes())
 if config.PINECONE_INDEX not in [i["name"] for i in pc.list_indexes()]:
     pc.create_index(
         name=config.PINECONE_INDEX,
-        dimension=768,  
+        dimension=384,  
         metric="cosine",
         spec=ServerlessSpec(cloud="aws", region="us-east-1")
     )
 
-# Connect to index
 index = pc.Index(config.PINECONE_INDEX)
 
 def upsert(chunks, embeddings):
     vectors = []
     for chunk, embedding in zip(chunks, embeddings):
+        if hasattr(embedding, "tolist"):
+            embedding = embedding.tolist()
         vectors.append({
             "id": chunk.metadata["id"],
             "values": embedding,
@@ -51,17 +52,8 @@ def upsert(chunks, embeddings):
         })
     index.upsert(vectors=vectors)
 
-def query_vector(vector, top_k=5):
+def query_vector(vector, top_k=3):
+    if hasattr(vector, "tolist"):
+        vector = vector.tolist()
     return index.query(vector=vector, top_k=top_k, include_metadata=True)
 
-
-# Clear old PDF helper
-
-# def clear_old_pdf(pdf_title):
-#     matches = index.query(filter={"metadata.title": pdf_title}, top_k=1000).get("matches", [])
-#     ids = [m["id"] for m in matches]
-#     if ids:
-#         index.delete(ids=ids)
-#         print(f"Deleted {len(ids)} vectors for PDF: {pdf_title}")
-#     else:
-#         print(f"No entries found for PDF: {pdf_title}")
