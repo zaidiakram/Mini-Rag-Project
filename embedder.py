@@ -12,23 +12,10 @@
 #     )
 #     return response.embeddings
 
-import asyncio
-from langchain_google_genai.embeddings import GoogleGenerativeAIEmbeddings
-import config
-
-# Ensure event loop exists in Streamlit's ScriptRunner thread
-try:
-    asyncio.get_running_loop()
-except RuntimeError:
-    asyncio.set_event_loop(asyncio.new_event_loop())
-
-
-
-embeddings_client = GoogleGenerativeAIEmbeddings(
-    model="models/embedding-001",
-    google_api_key=config.GEMINI_API_KEY
-)
+from sentence_transformers import SentenceTransformer
 
 def embed_texts(texts: list[str]) -> list[list[float]]:
-    return embeddings_client.embed_documents(texts)
+    model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')
+    embeddings = model.encode(texts)
+    return embeddings
 
