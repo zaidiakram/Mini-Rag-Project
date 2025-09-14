@@ -1,4 +1,4 @@
-# 🔎 Mini RAG Application (Track B - AI Engineer Assessment)
+#🔎Mini RAG Application
 
 ## 📌 Project Overview
 This project is a **Mini Retrieval-Augmented Generation (RAG) application** that enables users to ask questions over uploaded documents.  
