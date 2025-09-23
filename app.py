@@ -1,5 +1,6 @@
 import asyncio
 import nest_asyncio
+from dotenv import load_dotenv
 
 try:
     asyncio.get_running_loop()
@@ -7,11 +8,14 @@ except RuntimeError:
     asyncio.set_event_loop(asyncio.new_event_loop())
 
 nest_asyncio.apply()
+
 import streamlit as st
-import config
 from main import build_knowledge_base, ask_question
+
+load_dotenv()
+
 st.set_page_config(page_title="RAG Demo", page_icon="🤖", layout="wide")
-import streamlit as st
+
 st.markdown(
     """
     <div style="width: 100%; text-align: center;">
