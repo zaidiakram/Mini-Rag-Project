@@ -3,6 +3,14 @@ from langchain_community.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import config
 
+try:
+    import streamlit as st
+    CHUNK_SIZE = int(st.secrets["CHUNK_SIZE"])
+    CHUNK_OVERLAP = int(st.secrets["CHUNK_OVERLAP"])
+except (ModuleNotFoundError, st.errors.StreamlitSecretNotFoundError):
+    import config
+    CHUNK_SIZE = config.CHUNK_SIZE
+    CHUNK_OVERLAP = config.CHUNK_OVERLAP
 
 def load_and_chunk(file_path):
     loader = PyPDFLoader(file_path)
